@@ -1,3 +1,60 @@
 <html>
-    <meta http-equiv="refresh" content="0; url=https://allrise1.github.io/onlinerave/rave.html"></meta>
+  <body>
+    <div id="player"></div>
+
+    <script defer type="text/javascript" src="_rave_concert.js"></script>
+
+    <script>
+	var tag = document.createElement('script');
+
+	tag.src = "https://www.youtube.com/iframe_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	var player;
+	function tmDisplay() {
+		var tm = _rave_payer.getDuration();
+		//var tm = _rave_payer.getCurrentTime();
+		console.log(tm);
+	}
+	
+	function pair_result(error)
+	{
+		console.log(error.code+':'+error);
+	}
+	
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '360',
+          width: '640',
+          videoId: 'D-Wc2cEOaQQ',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+        _rave_youtube_player(player);
+		//setInterval(tmDisplay, 1000);
+      }
+
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      var done = true;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 6000);
+          done = true;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+    </script>
+
+    <br><br>
+    <input type="button" id="rave_pair" onclick="_rave_ble_paring(pair_result);" value="BT Pair" />
+
+  </body>
 </html>
